@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIACOM - Pirajuçara / Fervima</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        header {
+            background-color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+        #btn-nova-ocorrencia {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        #btn-nova-ocorrencia:hover {
+            opacity: 0.9;
+        }
+        .linha-separacao {
+            height: 6px;
+            display: flex;
+        }
+        .linha-verde {
+            background-color: #28a745;
+            flex: 1;
+        }
+        .linha-vermelha {
+            background-color: #dc3545;
+            flex: 1;
+        }
+        .fixed-field {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SIACOM - Pirajuçara / Fervima</h1>
+        <button id="btn-nova-ocorrencia" class="btn" onclick="abrirSelecaoTipo()">Nova Ocorrência</button>
+    </header>
+    <div class="linha-separacao">
+        <div class="linha-verde"></div>
+        <div class="linha-vermelha"></div>
+    </div>
+
+    <main class="container my-4">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Protocolo</th>
+                    <th>Data</th>
+                    <th>Ocorrencia</th>
+                    <th>Prefixo</th>
+                    <th>Situacao</th>
+                    <th>Empresa</th>
+                </tr>
+            </thead>
+            <tbody id="ocorrencias-list"></tbody>
+        </table>
+
+        <!-- Seleção do tipo de ocorrência -->
+        <div id="selecao-tipo" class="card p-3" style="display:none;">
+            <h2>Selecionar Tipo de Ocorrência</h2>
+            <button class="btn btn-outline-primary mb-2" onclick="abrirFormulario('ATRASOS DE PARTIDA')">ATRASOS DE PARTIDA</button>
+            <button class="btn btn-outline-danger mb-2" onclick="abrirFormulario('CANCELAMENTOS DE PARTIDAS')">CANCELAMENTOS DE PARTIDAS</button>
+        </div>
+
+        <!-- Formulário dinâmico -->
+        <div id="formulario-ocorrencia" class="card p-3" style="display:none;"></div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2025 VIACAO FERVIMA/PIRAJUCARA</p>
+    </footer>
+
+    <script>
+        // ======== VERIFICA LOGIN ========
+        async function verificarLogin() {
+            try {
+                const res = await fetch('http://localhost:3000/ocorrencias', { method: 'GET', credentials: 'include' });
+                if (!res.ok) {
+                    window.location.href = 'login.html';
+                }
+            } catch (err) {
+                console.error(err);
+                window.location.href = 'login.html';
+            }
+        }
+        verificarLogin();
+
+        // ======== FUNÇÕES DE FORMULÁRIO ========
+        function abrirSelecaoTipo() {
+            document.getElementById('selecao-tipo').style.display = 'block';
+            document.getElementById('formulario-ocorrencia').style.display = 'none';
+        }
+
+        function abrirFormulario(tipo) {
+            const formDiv = document.getElementById('formulario-ocorrencia');
+            formDiv.style.display = 'block';
+            document.getElementById('selecao-tipo').style.display = 'none';
+            formDiv.innerHTML = '';
+
+            if(tipo === 'ATRASOS DE PARTIDA') {
+                formDiv.innerHTML = `<!-- Formulário ATRASOS DE PARTIDA completo como no seu código -->`;
+            } else if(tipo === 'CANCELAMENTOS DE PARTIDAS') {
+                formDiv.innerHTML = `<!-- Formulário CANCELAMENTOS DE PARTIDAS completo como no seu código -->`;
+            }
+        }
+
+        // ======== CARREGA TABELA ========
+        function carregarTabela(ocorrencias) {
+            const tabela = document.getElementById('ocorrencias-list');
+            tabela.innerHTML = '';
+            ocorrencias.forEach(o => {
+                const linha = tabela.insertRow();
+                linha.insertCell(0).textContent = o.protocolo;
+                linha.insertCell(1).textContent = o.data;
+                linha.insertCell(2).textContent = o.ocorrencia;
+                linha.insertCell(3).textContent = o.prefixo || '';
+                linha.insertCell(4).textContent = o.situacao || '';
+                linha.insertCell(5).textContent = o.empresa;
+            });
+        }
+
+        // ======== ADICIONA OCORRÊNCIA ========
+        async function adicionarOcorrencia(event) {
+            event.preventDefault();
+            const dados = {
+                empresa: document.getElementById('empresa').value,
+                data_inicio: document.getElementById('data_inicio')?.value || '',
+                data_termino: document.getElementById('data_termino')?.value || '',
+                hora_inicio: document.getElementById('hora_inicio')?.value || '',
+                hora_termino: document.getElementById('hora_termino')?.value || '',
+                locais: document.getElementById('locais')?.value || '',
+                veiculos: document.getElementById('veiculos')?.value || '',
+                atraso: document.getElementById('atraso')?.value || '',
+                partida_interrompida: document.getElementById('partida_interrompida')?.value || '',
+                canceladas_ab: document.getElementById('canceladas_ab')?.value || '',
+                canceladas_ba: document.getElementById('canceladas_ba')?.value || '',
+                motivo: document.getElementById('motivo')?.value || '',
+                providencia: document.getElementById('providencia')?.value || '',
+                horario: document.getElementById('horario')?.value || '',
+                prefixo: document.getElementById('prefixo')?.value || '',
+                sentido: document.getElementById('sentido')?.value || '',
+                ocorrencia: document.querySelector('h2').textContent
+            };
+            try {
+                const res = await fetch('http://localhost:3000/ocorrencias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(dados)
+                });
+                if (!res.ok) throw new Error('Erro ao criar ocorrência');
+                const nova = await res.json();
+                const tabela = document.getElementById('ocorrencias-list');
+                const linha = tabela.insertRow();
+                linha.insertCell(0).textContent = nova.protocolo;
+                linha.insertCell(1).textContent = nova.data;
+                linha.insertCell(2).textContent = nova.ocorrencia;
+                linha.insertCell(3).textContent = nova.prefixo || '';
+                linha.insertCell(4).textContent = nova.situacao || '';
+                linha.insertCell(5).textContent = nova.empresa;
+                document.getElementById('formulario-ocorrencia').style.display = 'none';
+                abrirSelecaoTipo();
+            } catch (err) {
+                alert(err.message);
+                console.error(err);
+            }
+        }
+
+        // ======== CARREGA OCORRÊNCIAS ========
+        async function carregarOcorrencias() {
+            try {
+                const res = await fetch('http://localhost:3000/ocorrencias', { credentials: 'include' });
+                if (!res.ok) throw new Error('Erro ao carregar ocorrências');
+                const ocorrencias = await res.json();
+                carregarTabela(ocorrencias);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.onload = carregarOcorrencias;
+    </script>
+</body>
+</html>
