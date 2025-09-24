@@ -12,6 +12,7 @@
         <h1>SIACOM - Pirajuçara / Fervima</h1>
         <button id="btn-nova-ocorrencia" class="btn" onclick="abrirSelecaoTipo()">Nova Ocorrência</button>
     </header>
+
     <div class="linha-separacao">
         <div class="linha-verde"></div>
         <div class="linha-vermelha"></div>
@@ -23,23 +24,21 @@
                 <tr>
                     <th>Protocolo</th>
                     <th>Data</th>
-                    <th>Ocorrencia</th>
+                    <th>Ocorrência</th>
                     <th>Prefixo</th>
-                    <th>Situacao</th>
+                    <th>Situação</th>
                     <th>Empresa</th>
                 </tr>
             </thead>
             <tbody id="ocorrencias-list"></tbody>
         </table>
 
-        <!-- Seleção do tipo de ocorrência -->
         <div id="selecao-tipo" class="card p-3" style="display:none;">
             <h2>Selecionar Tipo de Ocorrência</h2>
             <button class="btn btn-outline-primary mb-2" onclick="abrirFormulario('ATRASOS DE PARTIDA')">ATRASOS DE PARTIDA</button>
             <button class="btn btn-outline-danger mb-2" onclick="abrirFormulario('CANCELAMENTOS DE PARTIDAS')">CANCELAMENTOS DE PARTIDAS</button>
         </div>
 
-        <!-- Formulário dinâmico -->
         <div id="formulario-ocorrencia" class="card p-3" style="display:none;"></div>
     </main>
 
