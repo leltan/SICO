@@ -1,63 +1,60 @@
-/* Global Styles */
+/* ======= ESTILOS GLOBAIS ======= */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff; /* fundo branco */
+    background-color: #fff;
 }
 
 header {
-    background-color: #fff; /* fundo branco do header */
-    color: #333;
-    padding: 15px;
-    text-align: center;
-    position: relative;
+    background-color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
 }
 
-/* Título do Header */
 header h1 {
     font-size: 1.5rem;
-    font-weight: bold;
     margin: 0;
-}
-
-/* Linhas decorativas abaixo do header */
-.header-line-green {
-    height: 6px;
-    background-color: #8DB600;
-}
-
-.header-line-red {
-    height: 6px;
-    background-color: #dc3545;
-}
-
-/* Botão Nova Ocorrência */
-#btn-nova-ocorrencia {
-    margin-top: 10px;
     font-weight: bold;
+}
+
+#btn-nova-ocorrencia {
+    background-color: #28a745;
     color: white;
+    font-weight: bold;
     padding: 10px 20px;
     border: none;
-    cursor: pointer;
     border-radius: 4px;
-    background: repeating-linear-gradient(
-        45deg,
-        #8DB600,
-        #8DB600 20px,
-        #dc3545 20px,
-        #dc3545 25px
-    );
+    cursor: pointer;
 }
+
 #btn-nova-ocorrencia:hover {
     opacity: 0.9;
 }
 
-/* Main e Tabelas */
+.linha-separacao {
+    height: 6px;
+    display: flex;
+}
+
+.linha-verde {
+    background-color: #28a745;
+    flex: 1;
+}
+
+.linha-vermelha {
+    background-color: #dc3545;
+    flex: 1;
+}
+
 main {
     padding: 20px;
 }
 
+/* ======= TABELA ======= */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -79,7 +76,7 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Formulários */
+/* ======= FORMULÁRIOS ======= */
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -88,11 +85,58 @@ tr:nth-child(even) {
     margin-bottom: 20px;
 }
 
+.form-group label {
+    font-weight: bold;
+}
+
 .fixed-field {
     font-weight: bold;
 }
 
-/* Footer */
+/* ======= BOTÕES ======= */
+.btn {
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* ======= FOOTER ======= */
 footer {
     background-color: #333;
     color: #fff;
